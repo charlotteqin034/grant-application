@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grant Application | Northfield Community Fund</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1d3557;
+    --navy-2: #274b75;
+    --teal: #2a7f78;
+    --bg: #f3f4f6;
+    --card: #ffffff;
+    --line: #d9dde3;
+    --text: #1f2933;
+    --muted: #5f6b7a;
+    --error: #b42318;
+    --error-bg: #fef3f2;
+    --ok: #217a4a;
+    --focus: #8bb8e8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 "Source Sans 3", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  a { color: var(--navy-2); }
+
+  /* ---------- Header ---------- */
+  .demo-bar {
+    background: #fff7e0;
+    border-bottom: 1px solid #f0dca0;
+    color: #6b5310;
+    font-size: 13px;
+    text-align: center;
+    padding: 6px 16px;
+  }
+  header.site {
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--navy); }
+  .brand svg { flex: none; }
+  .brand-name { font-family: "Source Serif 4", Georgia, serif; font-size: 20px; font-weight: 600; line-height: 1.1; }
+  .brand-sub { font-size: 12px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+  .user { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--navy); color: #fff;
+    display: grid; place-items: center; font-weight: 600; font-size: 13px;
+  }
+  nav.crumbs {
+    background: var(--navy);
+    color: #c9d6e8;
+    font-size: 14px;
+  }
+  nav.crumbs .site-inner { padding: 10px 24px; justify-content: flex-start; gap: 8px; flex-wrap: wrap; }
+  nav.crumbs a { color: #fff; text-decoration: none; }
+  nav.crumbs span.sep { opacity: .6; }
+
+  /* ---------- Layout ---------- */
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 24px 80px;
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+  aside.toc {
+    position: sticky;
+    top: 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .toc h2 {
+    margin: 0;
+    padding: 14px 16px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+  }
+  .progress { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .bar { height: 6px; background: #e5e8ec; border-radius: 3px; overflow: hidden; }
+  .bar > div { height: 100%; width: 0; background: var(--teal); transition: width .25s; }
+  .toc ol { list-style: none; margin: 0; padding: 6px 0; max-height: calc(100vh - 220px); overflow: auto; }
+  .toc li a {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 7px 16px;
+    color: var(--text);
+    text-decoration: none;
+    line-height: 1.35;
+  }
+  .toc li a:hover { background: #f5f7fa; }
+  .toc .dot {
+    flex: none;
+    width: 16px; height: 16px; margin-top: 1px;
+    border-radius: 50%;
+    border: 2px solid #b8c0cc;
+  }
+  .toc li.done .dot { border-color: var(--ok); background: var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") center/12px no-repeat; }
+  .toc li.err .dot { border-color: var(--error); }
+
+  main { min-width: 0; }
+  .intro {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .intro h1 { font-family: "Source Serif 4", Georgia, serif; color: var(--navy); font-size: 28px; margin: 0 0 4px; line-height: 1.2; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 22px; color: var(--muted); font-size: 14px; margin: 8px 0 16px; }
+  .meta b { color: var(--text); font-weight: 600; }
+  .status-pill { display: inline-block; background: #e8f1fb; color: var(--navy-2); font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: .05em; }
+  .intro p { margin: 0 0 10px; }
+  .note {
+    background: #f5f8fb;
+    border-left: 4px solid var(--navy-2);
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #354352;
+    margin-top: 14px;
+  }
+  .note ul { margin: 6px 0 0; padding-left: 20px; }
+
+  section.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    scroll-margin-top: 20px;
+  }
+  .card > header {
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .card > header .num { color: var(--teal); font-weight: 700; font-size: 14px; white-space: nowrap; }
+  .card > header h2 { margin: 0; font-size: 19px; color: var(--navy); }
+  .card .body { padding: 22px 28px 26px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; }
+  .grid .full { grid-column: 1 / -1; }
+
+  .field { margin-bottom: 22px; }
+  .grid .field { margin-bottom: 0; }
+  .field:last-child { margin-bottom: 0; }
+  label.q, .q { display: block; font-weight: 600; margin-bottom: 4px; }
+  .req { color: var(--error); margin-left: 2px; }
+  .help { color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+  input[type=text], input[type=email], input[type=tel], input[type=url], input[type=number], input[type=date], select, textarea {
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    background: #fff;
+    border: 1px solid #b9c1cc;
+    border-radius: 4px;
+    padding: 9px 11px;
+  }
+  textarea { min-height: 190px; resize: vertical; line-height: 1.55; }
+  input:focus, select:focus, textarea:focus { outline: 3px solid var(--focus); outline-offset: 0; border-color: var(--navy-2); }
+  .counter { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .counter.over { color: var(--error); font-weight: 600; }
+  .field.invalid input, .field.invalid select, .field.invalid textarea { border-color: var(--error); background: var(--error-bg); }
+  .field .errmsg { display: none; color: var(--error); font-size: 14px; margin-top: 6px; }
+  .field.invalid .errmsg { display: block; }
+
+  .money { position: relative; }
+  .money::before { content: "$"; position: absolute; left: 11px; top: 9px; color: var(--muted); }
+  .money input { padding-left: 24px; }
+
+  .upload {
+    border: 1px dashed #aab4c0;
+    border-radius: 4px;
+    padding: 12px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    background: #fafbfc;
+  }
+  .upload .fname { font-size: 14px; color: var(--muted); }
+  .upload input { font-size: 14px; max-width: 100%; }
+
+  .check { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
+  .check input { margin-top: 5px; width: 17px; height: 17px; flex: none; }
+
+  .actions {
+    position: sticky; bottom: 0;
+    background: rgba(255,255,255,.96);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    box-shadow: 0 -4px 14px rgba(15,23,42,.06);
+  }
+  .saved { font-size: 14px; color: var(--muted); }
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  button {
+    font: inherit; font-weight: 600;
+    border-radius: 4px;
+    padding: 9px 18px;
+    cursor: pointer;
+    border: 1px solid var(--navy);
+  }
+  .btn-secondary { background: #fff; color: var(--navy); }
+  .btn-secondary:hover { background: #f1f4f8; }
+  .btn-primary { background: var(--navy); color: #fff; }
+  .btn-primary:hover { background: var(--navy-2); }
+
+  .alert {
+    display: none;
+    background: var(--error-bg);
+    border: 1px solid #f4c7c3;
+    color: var(--error);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+  }
+  .alert.show { display: block; }
+
+  .confirm { display: none; }
+  .confirm.show { display: block; }
+  .confirm .body { text-align: center; padding: 48px 28px; }
+  .confirm .tick {
+    width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 16px;
+    background: var(--ok); display: grid; place-items: center;
+  }
+  .confirm h2 { color: var(--navy); font-family: "Source Serif 4", Georgia, serif; margin: 0 0 8px; }
+
+  footer.site {
+    border-top: 1px solid var(--line);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer.site .site-inner { flex-wrap: wrap; }
+
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: 1fr; padding: 16px 16px 60px; gap: 16px; }
+    aside.toc { position: static; }
+    .toc ol { display: none; }
+    .progress { border-bottom: 0; }
+    .user .uname { display: none; }
+  }
+  @media (max-width: 600px) {
+    .site-inner, nav.crumbs .site-inner { padding-left: 16px; padding-right: 16px; }
+    .grid { grid-template-columns: 1fr; }
+    .intro, .card .body { padding-left: 16px; padding-right: 16px; }
+    .card > header { padding: 14px 16px; flex-direction: column; gap: 2px; }
+    .intro h1 { font-size: 23px; }
+    .actions { padding: 12px 16px; }
+    .btns, .btns button { width: 100%; }
+  }
+  @media print {
+    .demo-bar, nav.crumbs, aside.toc, .actions, header.site .user { display: none; }
+    .wrap { display: block; }
+    section.card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">Sample application form for demonstration purposes. Northfield Community Fund is fictional, and nothing entered here is sent anywhere.</div>
+
+<header class="site">
+  <div class="site-inner">
+    <a class="brand" href="#">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+        <rect width="40" height="40" rx="6" fill="#1d3557"/>
+        <path d="M10 29V12l10 11V12M20 23l10 6V12" fill="none" stroke="#7fc8c0" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>
+        <span class="brand-name">Northfield Community Fund</span><br>
+        <span class="brand-sub">Grantee Portal</span>
+      </span>
+    </a>
+    <div class="user"><span class="uname">Applicant Workspace</span><span class="avatar">AP</span></div>
+  </div>
+</header>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <div class="site-inner">
+    <a href="#">Dashboard</a><span class="sep">›</span>
+    <a href="#">Open Opportunities</a><span class="sep">›</span>
+    <span>2027 Economic Opportunity Grant</span>
+  </div>
+</nav>
+
+<div class="wrap">
+  <aside class="toc" aria-label="Application sections">
+    <h2>Application Sections</h2>
+    <div class="progress">
+      <div class="progress-label"><span>Progress</span><span id="pct">0%</span></div>
+      <div class="bar"><div id="barfill"></div></div>
+    </div>
+    <ol id="toc"></ol>
+  </aside>
+
+  <main>
+    <div class="intro" id="top">
+      <span class="status-pill" id="status">Draft</span>
+      <h1>2027 Economic Opportunity Grant: Full Proposal</h1>
+      <div class="meta">
+        <span>Deadline: <b>January 15, 2027, 5:00 PM PT</b></span>
+        <span>Award range: <b>$25,000 – $150,000</b></span>
+        <span>Grant term: <b>12–24 months</b></span>
+      </div>
+      <p>The Economic Opportunity Grant supports nonprofit organizations that create pathways to living-wage careers for people facing systemic barriers to employment. Please complete every section below. Narrative responses should be specific and concise; reviewers value clear data and concrete examples over length.</p>
+      <div class="note">
+        <b>Before you begin</b>
+        <ul>
+          <li>Fields marked <span class="req">*</span> are required.</li>
+          <li>Your progress saves automatically in this browser. You may also select <b>Save Draft</b> at any time.</li>
+          <li>Word limits are enforced at submission. We suggest drafting longer answers in a separate document first.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert" id="alert" role="alert"></div>
+
+    <form id="app" novalidate>
+
+      <section class="card" id="sec-org">
+        <header><span class="num">Section 1</span><h2>Organization Information</h2></header>
+        <div class="body grid">
+          <div class="field full">
+            <label class="q" for="org_name">Legal name of organization<span class="req">*</span></label>
+            <input type="text" id="org_name" name="org_name" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="ein">EIN / Tax ID<span class="req">*</span></label>
+            <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX" pattern="\d{2}-?\d{7}" required>
+            <div class="errmsg">Enter a 9-digit EIN (e.g. 12-3456789).</div>
+          </div>
+          <div class="field">
+            <label class="q" for="tax_status">Tax-exempt status<span class="req">*</span></label>
+            <select id="tax_status" name="tax_status" required>
+              <option value="">Select…</option>
+              <option>501(c)(3) public charity</option>
+              <option>Fiscally sponsored project</option>
+              <option>Other 501(c) organization</option>
+              <option>Government entity / tribal nation</option>
+            </select>
+            <div class="errmsg">Please make a selection.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="year_founded">Year founded<span class="req">*</span></label>
+            <input type="number" id="year_founded" name="year_founded" min="1800" max="2026" required>
+            <div class="errmsg">Enter a valid year.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="website">Website</label>
+            <input type="url" id="website" name="website" placeholder="https://">
+            <div class="errmsg">Enter a full URL starting with https://</div>
+          </div>
+          <div class="field full">
+            <label class="q" for="address">Mailing address<span class="req">*</span></label>
+            <input type="text" id="address" name="address" placeholder="Street, City, State, ZIP" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="org_budget">Current annual operating budget<span class="req">*</span></label>
+            <div class="money"><input type="number" id="org_budget" name="org_budget" min="0" step="1" required></div>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="staff">Number of full-time staff</label>
+            <input type="number" id="staff" name="staff" min="0">
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="sec-contact">
+        <header><span class="num">Section 2</span><h2>Primary Contact</h2></header>
+        <div class="body grid">
+          <div class="field">
+            <label class="q" for="contact_name">Full name<span class="req">*</span></label>
+            <input type="text" id="contact_name" name="contact_name" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="contact_title">Title<span class="req">*</span></label>
+            <input type="text" id="contact_title" name="contact_title" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="contact_email">Email<span class="req">*</span></label>
+            <input type="email" id="contact_email" name="contact_email" required>
+            <div class="errmsg">Enter a valid email address.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="contact_phone">Phone</label>
+            <input type="tel" id="contact_phone" name="contact_phone">
+          </div>
+          <div class="field">
+            <label class="q" for="ed_name">Executive Director / CEO<span class="req">*</span></label>
+            <input type="text" id="ed_name" name="ed_name" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="ed_email">Executive Director email</label>
+            <input type="email" id="ed_email" name="ed_email">
+            <div class="errmsg">Enter a valid email address.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="sec-request">
+        <header><span class="num">Section 3</span><h2>Request Summary</h2></header>
+        <div class="body grid">
+          <div class="field full">
+            <label class="q" for="program_name">Program or project name<span class="req">*</span></label>
+            <input type="text" id="program_name" name="program_name" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="amount">Amount requested<span class="req">*</span></label>
+            <p class="help">Between $25,000 and $150,000.</p>
+            <div class="money"><input type="number" id="amount" name="amount" min="25000" max="150000" step="1" required></div>
+            <div class="errmsg">Enter an amount between $25,000 and $150,000.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="program_budget">Total program budget<span class="req">*</span></label>
+            <p class="help">Full cost of the program, all sources.</p>
+            <div class="money"><input type="number" id="program_budget" name="program_budget" min="0" step="1" required></div>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="start">Proposed start date<span class="req">*</span></label>
+            <input type="date" id="start" name="start" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="end">Proposed end date<span class="req">*</span></label>
+            <input type="date" id="end" name="end" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="support_type">Type of support<span class="req">*</span></label>
+            <select id="support_type" name="support_type" required>
+              <option value="">Select…</option>
+              <option>Program / project support</option>
+              <option>General operating support</option>
+              <option>Capacity building</option>
+              <option>Capital</option>
+            </select>
+            <div class="errmsg">Please make a selection.</div>
+          </div>
+          <div class="field">
+            <label class="q" for="served">Participants to be served during grant period<span class="req">*</span></label>
+            <input type="number" id="served" name="served" min="0" required>
+            <div class="errmsg">This field is required.</div>
+          </div>
+          <div class="field full">
+            <label class="q" for="summary">Project summary<span class="req">*</span></label>
+            <p class="help">In two or three sentences, summarize what this grant will fund. This may be shared with our board.</p>
+            <textarea id="summary" name="summary" data-words="75" style="min-height:110px" required></textarea>
+            <div class="counter"><span>Maximum 75 words</span><span class="wc">0 / 75 words</span></div>
+            <div class="errmsg">This field is required.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="sec-narrative">
+        <header><span class="num">Section 4</span><h2>Proposal Narrative</h2></header>
+        <div class="body" id="narrative"></div>
+      </section>
+
+      <section class="card" id="sec-attach">
+        <header><span class="num">Section 5</span><h2>Required Attachments</h2></header>
+        <div class="body">
+          <p class="help" style="margin-bottom:18px">Accepted formats: PDF, DOCX, XLSX. Maximum 10 MB per file.</p>
+          <div class="field">
+            <span class="q">Program budget (using our template or your own)<span class="req">*</span></span>
+            <div class="upload"><input type="file" id="att_budget" name="att_budget" accept=".pdf,.docx,.xlsx" required><span class="fname">No file chosen</span></div>
+            <div class="errmsg">Please attach this document.</div>
+          </div>
+          <div class="field">
+            <span class="q">IRS determination letter<span class="req">*</span></span>
+            <div class="upload"><input type="file" id="att_irs" name="att_irs" accept=".pdf" required><span class="fname">No file chosen</span></div>
+            <div class="errmsg">Please attach this document.</div>
+          </div>
+          <div class="field">
+            <span class="q">Most recent audited financial statements or Form 990<span class="req">*</span></span>
+            <div class="upload"><input type="file" id="att_audit" name="att_audit" accept=".pdf" required><span class="fname">No file chosen</span></div>
+            <div class="errmsg">Please attach this document.</div>
+          </div>
+          <div class="field">
+            <span class="q">Board of directors list with affiliations<span class="req">*</span></span>
+            <div class="upload"><input type="file" id="att_board" name="att_board" accept=".pdf,.docx,.xlsx" required><span class="fname">No file chosen</span></div>
+            <div class="errmsg">Please attach this document.</div>
+          </div>
+          <div class="field">
+            <span class="q">Logic model or theory of change diagram (optional)</span>
+            <div class="upload"><input type="file" id="att_logic" name="att_logic" accept=".pdf,.docx"><span class="fname">No file chosen</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="sec-certify">
+        <header><span class="num">Section 6</span><h2>Certification</h2></header>
+        <div class="body">
+          <div class="field">
+            <label class="check"><input type="checkbox" id="cert_accurate" name="cert_accurate" required><span>I certify that the information in this application is true and accurate to the best of my knowledge.<span class="req">*</span></span></label>
+            <label class="check"><input type="checkbox" id="cert_authorized" name="cert_authorized" required><span>I am authorized by the organization's governing body to submit this application.<span class="req">*</span></span></label>
+            <label class="check"><input type="checkbox" id="cert_nondiscrim" name="cert_nondiscrim" required><span>The organization does not discriminate on the basis of race, color, religion, sex, gender identity, sexual orientation, national origin, age, disability, or veteran status.<span class="req">*</span></span></label>
+            <div class="errmsg">All certifications must be checked.</div>
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label class="q" for="sig_name">Authorized signer (type full name)<span class="req">*</span></label>
+              <input type="text" id="sig_name" name="sig_name" required>
+              <div class="errmsg">This field is required.</div>
+            </div>
+            <div class="field">
+              <label class="q" for="sig_date">Date<span class="req">*</span></label>
+              <input type="date" id="sig_date" name="sig_date" required>
+              <div class="errmsg">This field is required.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="actions">
+        <span class="saved" id="saved">Not saved yet</span>
+        <div class="btns">
+          <button type="button" class="btn-secondary" id="print">Print / PDF</button>
+          <button type="button" class="btn-secondary" id="save">Save Draft</button>
+          <button type="submit" class="btn-primary">Submit Application</button>
+        </div>
+      </div>
+    </form>
+
+    <section class="card confirm" id="confirm" aria-live="polite">
+      <div class="body">
+        <div class="tick"><svg width="28" height="28" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3L12.5 5" fill="none" stroke="#fff" stroke-width="2"/></svg></div>
+        <h2>Application submitted</h2>
+        <p>Thank you. Your confirmation number is <b id="confno"></b>.</p>
+        <p class="help">This is a sample form, so no data was transmitted. Your responses remain saved in this browser.</p>
+        <p style="margin-top:20px"><button type="button" class="btn-secondary" id="back">Return to application</button></p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer class="site">
+  <div class="site-inner">
+    <span>© 2026 Northfield Community Fund (fictional, sample form)</span>
+    <span>Questions? <a href="#">grants@example.org</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var QUESTIONS = [
+    ["Organization Overview", "Provide a brief overview of your organization, including its history, mission, and major accomplishments.", 400],
+    ["Statement of Need", "Describe the problem or need your program addresses. Please include relevant data.", 500],
+    ["Target Population", "Who is your target population? Describe the demographics and barriers faced by the people you serve.", 400],
+    ["Program Description", "Describe the program or project for which you are requesting funding, including key activities and timeline.", 600],
+    ["Distinctiveness", "What makes your approach unique, and how does it differ from other organizations working on this issue?", 350],
+    ["Expected Outcomes", "What specific, measurable outcomes do you expect to achieve during the grant period?", 400],
+    ["Evaluation", "How will you evaluate your program’s effectiveness? Describe your data collection methods and tools.", 400],
+    ["Lived Experience", "How do people with lived experience inform your organization’s leadership, programs, and decision-making?", 350],
+    ["Labor Market Alignment", "How do the skills your program teaches align with current and projected labor market demand?", 350],
+    ["Partnerships", "Describe your key partnerships and how they contribute to the program’s success.", 350],
+    ["Supportive Services", "What supportive services do you provide to help participants complete the program and succeed afterward?", 350],
+    ["Sustainability", "How will this program be sustained after the grant period ends? Describe your funding mix and revenue strategy.", 400],
+    ["Leadership & Governance", "Describe the qualifications of your leadership team and the role your board plays in governance and oversight.", 400],
+    ["Diversity, Equity & Inclusion", "How does your organization advance diversity, equity, and inclusion internally and in your programming?", 350],
+    ["Theory of Change", "Explain your theory of change: how do your activities lead to short-, medium-, and long-term impact?", 450]
+  ];
+
+  var STORE = "nfcf-grant-draft-v1";
+  var form = document.getElementById("app");
+  var narrative = document.getElementById("narrative");
+
+  // Build narrative questions
+  QUESTIONS.forEach(function (q, i) {
+    var id = "q" + (i + 1);
+    var div = document.createElement("div");
+    div.className = "field";
+    div.id = "f-" + id;
+    div.innerHTML =
+      '<label class="q" for="' + id + '">4.' + (i + 1) + ' ' + q[0] + '<span class="req">*</span></label>' +
+      '<p class="help">' + q[1] + '</p>' +
+      '<textarea id="' + id + '" name="' + id + '" data-words="' + q[2] + '" required></textarea>' +
+      '<div class="counter"><span>Maximum ' + q[2] + ' words</span><span class="wc">0 / ' + q[2] + ' words</span></div>' +
+      '<div class="errmsg">This field is required.</div>';
+    narrative.appendChild(div);
+  });
+
+  // Sidebar
+  var SECTIONS = [
+    ["sec-org", "Organization Information"],
+    ["sec-contact", "Primary Contact"],
+    ["sec-request", "Request Summary"]
+  ].concat(QUESTIONS.map(function (q, i) { return ["f-q" + (i + 1), "4." + (i + 1) + " " + q[0]]; }))
+   .concat([["sec-attach", "Required Attachments"], ["sec-certify", "Certification"]]);
+
+  var toc = document.getElementById("toc");
+  SECTIONS.forEach(function (s) {
+    var li = document.createElement("li");
+    li.dataset.target = s[0];
+    li.innerHTML = '<a href="#' + s[0] + '"><span class="dot"></span><span>' + s[1] + '</span></a>';
+    toc.appendChild(li);
+  });
+
+  function words(str) { var m = str.trim().match(/\S+/g); return m ? m.length : 0; }
+
+  function fieldOk(el) {
+    if (el.type === "checkbox") return el.checked;
+    if (el.type === "file") return el.files.length > 0;
+    if (!el.value.trim()) return false;
+    if (el.dataset.words && words(el.value) > +el.dataset.words) return false;
+    return el.checkValidity();
+  }
+
+  function requiredIn(container) {
+    return Array.prototype.slice.call(container.querySelectorAll("[required]"));
+  }
+
+  function updateProgress() {
+    var done = 0;
+    toc.querySelectorAll("li").forEach(function (li) {
+      var c = document.getElementById(li.dataset.target);
+      var ok = requiredIn(c).every(fieldOk);
+      li.classList.toggle("done", ok);
+      if (ok) li.classList.remove("err");
+      if (ok) done++;
+    });
+    var pct = Math.round(done / SECTIONS.length * 100);
+    document.getElementById("pct").textContent = pct + "%";
+    document.getElementById("barfill").style.width = pct + "%";
+  }
+
+  function updateCount(ta) {
+    var max = +ta.dataset.words, n = words(ta.value);
+    var c = ta.parentNode.querySelector(".counter");
+    c.querySelector(".wc").textContent = n + " / " + max + " words";
+    c.classList.toggle("over", n > max);
+  }
+
+  // Draft persistence (browser only)
+  function collect() {
+    var data = {};
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.type === "file") return;
+      data[el.name] = el.type === "checkbox" ? el.checked : el.value;
+    });
+    return data;
+  }
+  function stamp() {
+    var t = new Date();
+    document.getElementById("saved").textContent = "Draft saved " + t.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+  function save() {
+    try { localStorage.setItem(STORE, JSON.stringify(collect())); stamp(); } catch (e) {}
+  }
+  function load() {
+    var data;
+    try { data = JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { data = null; }
+    if (!data) return;
+    Object.keys(data).forEach(function (k) {
+      var el = form.elements[k];
+      if (!el || el.type === "file") return;
+      if (el.type === "checkbox") el.checked = !!data[k]; else el.value = data[k];
+    });
+    document.getElementById("saved").textContent = "Draft restored";
+  }
+
+  load();
+  form.querySelectorAll("textarea[data-words]").forEach(updateCount);
+  updateProgress();
+
+  var timer;
+  form.addEventListener("input", function (e) {
+    if (e.target.dataset && e.target.dataset.words) updateCount(e.target);
+    var f = e.target.closest(".field");
+    if (f && f.classList.contains("invalid") && requiredIn(f).every(fieldOk)) f.classList.remove("invalid");
+    updateProgress();
+    clearTimeout(timer);
+    timer = setTimeout(save, 800);
+  });
+  form.addEventListener("change", function (e) {
+    if (e.target.type === "file") {
+      e.target.parentNode.querySelector(".fname").textContent =
+        e.target.files.length ? e.target.files[0].name : "No file chosen";
+    }
+    updateProgress();
+  });
+
+  document.getElementById("save").addEventListener("click", save);
+  document.getElementById("print").addEventListener("click", function () { window.print(); });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var firstBad = null, bad = 0;
+    form.querySelectorAll(".field").forEach(function (f) {
+      var req = requiredIn(f);
+      var ok = req.every(fieldOk);
+      // Optional fields still need a valid format if filled (e.g. URL, email)
+      f.querySelectorAll("input:not([required])").forEach(function (el) {
+        if (el.value && !el.checkValidity()) ok = false;
+      });
+      f.classList.toggle("invalid", !ok);
+      if (!ok) { bad++; if (!firstBad) firstBad = f; }
+    });
+    toc.querySelectorAll("li").forEach(function (li) {
+      var c = document.getElementById(li.dataset.target);
+      li.classList.toggle("err", !!c.querySelector(".field.invalid") || c.classList.contains("invalid"));
+    });
+    var alert = document.getElementById("alert");
+    if (bad) {
+      alert.textContent = bad + (bad === 1 ? " item needs" : " items need") + " attention before you can submit. Incomplete items are highlighted below.";
+      alert.classList.add("show");
+      firstBad.scrollIntoView({ behavior: "smooth", block: "center" });
+      var el = firstBad.querySelector("input, select, textarea");
+      if (el) el.focus({ preventScroll: true });
+      return;
+    }
+    alert.classList.remove("show");
+    save();
+    document.getElementById("confno").textContent =
+      "EOG-2027-" + String(Math.floor(Math.random() * 90000) + 10000);
+    form.style.display = "none";
+    document.getElementById("confirm").classList.add("show");
+    document.getElementById("status").textContent = "Submitted";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  document.getElementById("back").addEventListener("click", function () {
+    form.style.display = "";
+    document.getElementById("confirm").classList.remove("show");
+    document.getElementById("status").textContent = "Draft";
+  });
+})();
+</script>
+</body>
+</html>
